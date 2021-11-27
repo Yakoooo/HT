@@ -13,4 +13,8 @@ const store = createStore<rootStateType>({
   modules: { login }
 })
 
+export function setupvuex() {
+  store.dispatch('login/setVuexstore')
+}
+
 export default store

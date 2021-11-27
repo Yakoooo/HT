@@ -23,7 +23,6 @@ class cyjRequest {
 
     //全局的拦截器
     this.instance.interceptors.request.use((config) => {
-      console.log('全局的拦截器')
       return config
     })
   }
@@ -37,15 +36,14 @@ class cyjRequest {
       }
 
       this.instance
-        .request<unknown, T>(config)
+        .request<any, T>(config)
         .then((res) => {
           //局部拦截
           //获取值，然后返回修改值 和axios的拦截器功能不太一样
           if (config.insterceptors?.ResponseInterceptor) {
             res = config.insterceptors.ResponseInterceptor(res)
-            resolve(res)
           }
-          console.log(res)
+          resolve(res)
         })
         .catch((err) => {
           rejece(err)

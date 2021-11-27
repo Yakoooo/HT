@@ -1,18 +1,19 @@
 import cyjRequest from './request'
 import { BASE_URL } from './request/config'
+import localCaChe from '@/utilt/loadcaChe'
 
 const cyjRequestinsterface = new cyjRequest({
   baseURL: BASE_URL,
   insterceptors: {
     RequestInterceptor: (config) => {
-      console.log('构建的拦截' + config)
-      //拦截放行
+      const Token = localCaChe.getCaChe('token') ?? ''
+      if (Token) {
+        config.headers.Authorization = Token
+      }
       return config
     },
     ResponseInterceptor: (res) => {
-      console.log('构建的拦截')
-      //拦截放行
-      return res
+      return res.data
     }
   }
 })

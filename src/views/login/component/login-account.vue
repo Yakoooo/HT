@@ -31,7 +31,12 @@ export default defineComponent({
     //根据获取的判断，决定登录时机；
     const loginAction = (isKeepPwd: boolean) => {
       fromRef.value?.validate((value) => {
-        store.dispatch('login/gtecommit')
+        if (value) {
+          store.dispatch('login/getAccount', {
+            name: account.name,
+            password: account.pwd
+          })
+        }
         if (isKeepPwd) {
           loadcaChe.setCache('name', account.name)
           loadcaChe.setCache('pwd', account.pwd)

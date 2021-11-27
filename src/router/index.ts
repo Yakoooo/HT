@@ -1,8 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import loadcaChe from '@/utilt/loadcaChe'
 
 const routes: RouteRecordRaw[] = [
-  { path: '/', redirect: 'login' },
+  { path: '/', redirect: 'home' },
   {
     path: '/login',
     name: 'login',
@@ -18,6 +19,15 @@ const routes: RouteRecordRaw[] = [
 const roter = createRouter({
   routes,
   history: createWebHashHistory()
+})
+
+roter.beforeEach((to) => {
+  if (to.path !== '/login') {
+    const token = loadcaChe.getCaChe('token')
+    if (!token) {
+      return '/login'
+    }
+  }
 })
 
 export default roter

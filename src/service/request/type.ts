@@ -2,9 +2,9 @@ import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 //创建接口 ， 可以接受构建期间的拦截器
 export interface cyjRequestInterceptors<T = AxiosResponse> {
-  RequestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig
+  RequestInterceptor?: (config: any) => any
   RequestInterceptorCatch?: (error: any) => any
-  ResponseInterceptor?: (config: T) => T
+  ResponseInterceptor?: (res: T) => T
   ResponseInterceptorCatch?: (error: any) => any
 }
 
