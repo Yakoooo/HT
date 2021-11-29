@@ -9,6 +9,7 @@ import {
 } from '@/service/login/login'
 import { IAccount } from '@/service/login/types'
 import localCaChe from '@/utilt/loadcaChe'
+import mapRouterUse from '@/utilt/map-menus'
 
 const loginModule: Module<loginType, rootStateType> = {
   namespaced: true,
@@ -28,6 +29,11 @@ const loginModule: Module<loginType, rootStateType> = {
     },
     setUseMenu(state, value: any) {
       state.menu = value
+
+      const routers = mapRouterUse(state.menu)
+      routers.forEach((add: any) => {
+        router.addRoute('main', add)
+      })
     }
   },
   getters: {},
@@ -50,19 +56,16 @@ const loginModule: Module<loginType, rootStateType> = {
 
     setVuexstore(context) {
       const token = localCaChe.getCaChe('token')
-      console.log(token)
       if (token) {
         context.commit('setToken', token)
       }
 
       const useInfo = localCaChe.getCaChe('useInfo')
-      console.log(useInfo)
       if (useInfo) {
         context.commit('setUseInfo', useInfo)
       }
 
       const menu = localCaChe.getCaChe('menu')
-      console.log(menu)
       if (menu) {
         context.commit('setUseMenu', menu)
       }

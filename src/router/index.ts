@@ -3,16 +3,22 @@ import type { RouteRecordRaw } from 'vue-router'
 import loadcaChe from '@/utilt/loadcaChe'
 
 const routes: RouteRecordRaw[] = [
-  { path: '/', redirect: 'home' },
+  { path: '/', redirect: 'main' },
   {
     path: '/login',
     name: 'login',
     component: () => import('@/views/login/login.vue')
   },
   {
-    path: '/home',
-    name: 'home',
-    component: () => import('@/views/home/home.vue')
+    path: '/main',
+    name: 'main',
+    component: () => import('@/views/main/home.vue'),
+    children: []
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notFound',
+    component: () => import('@/views/notFound/notFound.vue')
   }
 ]
 
