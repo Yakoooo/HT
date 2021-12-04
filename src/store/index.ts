@@ -1,6 +1,7 @@
 import { createStore, useStore as useStroeVuex, Store } from 'vuex'
 import { rootStateType, IStroeType } from './types'
 import login from './login/login'
+import userList from './main/system/user'
 const store = createStore<rootStateType>({
   state: () => {
     return {
@@ -10,7 +11,7 @@ const store = createStore<rootStateType>({
   mutations: {},
   getters: {},
   actions: {},
-  modules: { login }
+  modules: { login, userList }
 })
 
 export function setupvuex() {

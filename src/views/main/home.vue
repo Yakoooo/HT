@@ -61,7 +61,6 @@ export default defineComponent({
     background-color: #e9eef3;
     color: var(--el-text-color-primary);
     text-align: center;
-    line-height: 160px;
   }
 
   body > .el-container {

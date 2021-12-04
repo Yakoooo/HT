@@ -1,8 +1,11 @@
 <template>
   <div class="CYJFrom">
+    <div class="header">
+      <slot name="header"></slot>
+    </div>
     <el-form :label-width="labelWidth">
       <el-row>
-        <template v-for="item in fromItem" :key="item.label">
+        <template v-for="item in fromitem" :key="item.label">
           <el-col v-bind="colLayut">
             <el-form-item :label="item.label" :style="itemStyle">
               <template
@@ -13,11 +16,12 @@
                   v-bind="item.otherOptions"
                   :show-password="item.type === 'password'"
                   :relus="item.relus"
+                  v-model="fromDate[`${item.value}`]"
                 ></el-input>
               </template>
               <template v-if="item.type === 'select'">
                 <el-select
-                  v-model="value"
+                  v-model="fromDate[`${item.value}`]"
                   :placeholder="item.placeholder"
                   style="width: 100%"
                 >
@@ -31,22 +35,36 @@
                   </el-option>
                 </el-select> </template
               ><template v-if="item.type === 'datepicker'">
-                <el-date-picker v-bind="item.otherOptions" style="width: 100%">
+                <el-date-picker
+                  v-model="fromDate[`${item.value}`]"
+                  v-bind="item.otherOptions"
+                  style="width: 100%"
+                >
                 </el-date-picker> </template></el-form-item
           ></el-col>
         </template>
       </el-row>
     </el-form>
+    <div class="btn">
+      <slot name="btn"> </slot>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { Search, Check } from '@element-plus/icons'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import { IFromItem } from '../types/types'
 export default defineComponent({
   name: 'CYJFrom',
   props: {
-    fromItem: {
+    modelValue: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    fromitem: {
       type: Array as PropType<IFromItem[]>,
       default: () => []
     },
@@ -63,19 +81,40 @@ export default defineComponent({
         //这是el栅格的响应式
         xl: 6,
         lg: 8,
-        md: 12,
-        sm: 24,
-        sx: 24
+        md: 8,
+        sm: 8,
+        sx: 12
       })
     }
   },
-  setup() {
-    return {}
+  setup(props, { emit }) {
+    //双向绑定
+    //拿到的数据创建本地响应
+    const fromDate = ref({ ...props.modelValue })
+
+    //监听源头修改本地
+    watch(
+      () => props.modelValue,
+      (newValue) => {
+        fromDate.value = newValue
+      }
+    )
+
+    //监听本地响应 ，变化后就反映到 源头
+    watch(
+      fromDate,
+      (newvalue) => {
+        emit('update:modelValue', newvalue)
+      },
+      { deep: true }
+    )
+    return { fromDate, Search, Check }
   }
 })
 </script>
 <style scoped lang="less">
 .CYJFrom {
+  overflow: hidden;
   padding: 20px;
   margin-bottom: 0px;
   .el-row {
@@ -103,6 +142,11 @@ export default defineComponent({
   .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
+  }
+
+  .btn {
+    float: right;
+    line-height: 0px;
   }
 }
 </style>

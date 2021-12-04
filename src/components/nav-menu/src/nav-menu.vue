@@ -6,7 +6,7 @@
     </div>
 
     <el-menu
-      default-active="1"
+      :default-active="'2'"
       class="el-menu-vertical-demo"
       background-color="#3c4d5e"
       :unique-opened="true"
@@ -41,19 +41,23 @@
 
 <script lang="ts">
 import { Monitor, Setting, Goods, ChatLineRound } from '@element-plus/icons'
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from '@/store/index'
-// import {} from '@/router/index'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { mapRouterPath, fristCur } from '@/utilt/map-menus'
 export default defineComponent({
   name: 'navMenu',
   props: ['isFold'],
   setup() {
     const route = useRouter()
     const store = useStore()
+    const routePath = useRoute()
     const useMenu = computed(() => {
       return store.state.login.menu
     })
+    const defaultActive = ref(fristCur + '')
+    defaultActive.value = mapRouterPath(useMenu.value, routePath.path)
+
     const onRouterPush = (value: any) => {
       if (value.url) {
         route.push(value.url)
@@ -61,7 +65,7 @@ export default defineComponent({
         route.push('/notFount')
       }
     }
-    return { useMenu, onRouterPush }
+    return { useMenu, onRouterPush, defaultActive }
   },
   components: {
     'el-icon-monitor': Monitor,
