@@ -3,5 +3,8 @@ export interface IuserListState {
   usersCount: number
   roleList: any[]
   roleCount: number
-  value?: any
+  goodsList: any[]
+  goodsCount: number
+  menuList: any[]
+  menuCount: number
 }

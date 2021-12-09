@@ -3,8 +3,6 @@ import { IbreadType } from '@/base-ui/CYJbread/types/types'
 
 let fristCur: any = null
 
-export { fristCur }
-
 export function mapRouterPathName(useMenu: any[], cur: string): any {
   const bread: IbreadType[] = []
   mapRouterPath(useMenu, cur, bread)
@@ -26,7 +24,6 @@ export function mapRouterPath(
         return findCur
       }
     } else if (item.type === 2 && item.url === cur) {
-      console.log('拿到了')
       return item
     }
   }
@@ -65,3 +62,41 @@ export default function (value: any[]): any {
 
   return roters
 }
+
+export function mapMenusToPermissions(userMenus: any[]) {
+  const permissions: string[] = []
+
+  const _getPermission = (menus: any[]) => {
+    for (const menu of menus) {
+      if (menu.type === 1 || menu.type === 2) {
+        _getPermission(menu.children ?? [])
+      } else if (menu.type === 3) {
+        permissions.push(menu.permission)
+      }
+    }
+  }
+
+  _getPermission(userMenus)
+
+  return permissions
+}
+
+export function mapMenuTeap(menuList: any[]) {
+  const menuListNumber: number[] = []
+
+  const _getTeap = (value: any[]) => {
+    for (const item of value) {
+      if (item.children) {
+        _getTeap(item.children)
+      } else {
+        menuListNumber.push(item.id)
+      }
+    }
+  }
+
+  _getTeap(menuList)
+
+  return menuListNumber
+}
+
+export { fristCur }

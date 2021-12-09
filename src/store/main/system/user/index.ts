@@ -1,7 +1,12 @@
 import { Module } from 'vuex'
 import { IuserListState } from './types/types'
 import { rootStateType } from '@/store/types'
-import { GetuseList } from '@/service/main/system/index'
+import {
+  GetuseList,
+  deleteuseList,
+  CreateItem,
+  EidtItem
+} from '@/service/main/system/index'
 
 const userList: Module<IuserListState, rootStateType> = {
   namespaced: true,
@@ -10,7 +15,11 @@ const userList: Module<IuserListState, rootStateType> = {
       usersList: [],
       usersCount: 0,
       roleList: [],
-      roleCount: 0
+      roleCount: 0,
+      goodsList: [],
+      goodsCount: 0,
+      menuList: [],
+      menuCount: 0
     }
   },
   mutations: {
@@ -25,18 +34,29 @@ const userList: Module<IuserListState, rootStateType> = {
     },
     setRoleCount(state, payload: number) {
       state.roleCount = payload
+    },
+    setGoodsList(state, payload: any[]) {
+      state.goodsList = payload
+    },
+    setGoodsCount(state, payload: number) {
+      state.goodsCount = payload
+    },
+    setMenuList(state, payload: any[]) {
+      state.menuList = payload
+    },
+    setMenuCount(state, payload: number) {
+      state.menuCount = payload
     }
   },
   getters: {
     getListDate: (state) => {
       return (value: string) => {
-        switch (value) {
-          case 'users':
-            return state.usersList
-            break
-          case 'role':
-            return state.roleCount
-        }
+        return (state as any)[`${value}List`]
+      }
+    },
+    getCountDate: (state) => {
+      return (value: string) => {
+        return (state as any)[`${value}Count`]
       }
     }
   },
@@ -53,6 +73,43 @@ const userList: Module<IuserListState, rootStateType> = {
       //根据接口拼接请求
       context.commit(`set${pageName}List`, list)
       context.commit(`set${pageName}Count`, totalCount)
+    },
+
+    async deletePageList(content, payload) {
+      const { pageName, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+
+      await deleteuseList(pageUrl)
+
+      //请求最新数据
+      content.dispatch('getPageUserList', {
+        pageName,
+        query: { offset: 0, size: 10 }
+      })
+    },
+
+    async userCreateItem(content, payload: any) {
+      const { pageName, data } = payload
+      const pageUrl = `/${pageName}`
+      await CreateItem(pageUrl, data)
+
+      //请求最新数据
+      content.dispatch('getPageUserList', {
+        pageName,
+        query: { offset: 0, size: 10 }
+      })
+    },
+
+    async userEidtItem(content, payload: any) {
+      const { pageName, data, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+      await EidtItem(pageUrl, data)
+
+      //请求最新数据
+      content.dispatch('getPageUserList', {
+        pageName,
+        query: { offset: 0, size: 10 }
+      })
     }
   }
 }

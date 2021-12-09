@@ -6,7 +6,7 @@
     </div>
 
     <el-menu
-      :default-active="'2'"
+      :default-active="defaultActive.id + ''"
       class="el-menu-vertical-demo"
       background-color="#3c4d5e"
       :unique-opened="true"
@@ -57,6 +57,7 @@ export default defineComponent({
     })
     const defaultActive = ref(fristCur + '')
     defaultActive.value = mapRouterPath(useMenu.value, routePath.path)
+    console.log(defaultActive.value)
 
     const onRouterPush = (value: any) => {
       if (value.url) {

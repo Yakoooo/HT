@@ -7,7 +7,11 @@
       <el-row>
         <template v-for="item in fromitem" :key="item.label">
           <el-col v-bind="colLayut">
-            <el-form-item :label="item.label" :style="itemStyle">
+            <el-form-item
+              v-if="!item.isHidden"
+              :label="item.label"
+              :style="itemStyle"
+            >
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
               >
@@ -16,12 +20,14 @@
                   v-bind="item.otherOptions"
                   :show-password="item.type === 'password'"
                   :relus="item.relus"
-                  v-model="fromDate[`${item.value}`]"
+                  :model-value="modelValue[item.value]"
+                  @update:modelValue="changeValue($event, item.value)"
                 ></el-input>
               </template>
               <template v-if="item.type === 'select'">
                 <el-select
-                  v-model="fromDate[`${item.value}`]"
+                  :model-value="modelValue[item.value]"
+                  @update:modelValue="changeValue($event, item.value)"
                   :placeholder="item.placeholder"
                   style="width: 100%"
                 >
@@ -29,14 +35,15 @@
                     v-bind="item.otherOptions"
                     v-for="index in item.options"
                     :key="index.key"
-                    :label="index.value"
+                    :label="index.key"
                     :value="index.value"
                   >
                   </el-option>
                 </el-select> </template
               ><template v-if="item.type === 'datepicker'">
                 <el-date-picker
-                  v-model="fromDate[`${item.value}`]"
+                  :model-value="modelValue[item.value]"
+                  @update:modelValue="changeValue($event, item.value)"
                   v-bind="item.otherOptions"
                   style="width: 100%"
                 >
@@ -79,11 +86,11 @@ export default defineComponent({
       type: Object,
       default: () => ({
         //这是el栅格的响应式
-        xl: 6,
-        lg: 8,
-        md: 8,
-        sm: 8,
-        sx: 12
+        xl: 8,
+        xs: 24,
+        sm: 24,
+        md: 12,
+        lg: 12
       })
     }
   },
@@ -93,22 +100,26 @@ export default defineComponent({
     const fromDate = ref({ ...props.modelValue })
 
     //监听源头修改本地
-    watch(
-      () => props.modelValue,
-      (newValue) => {
-        fromDate.value = newValue
-      }
-    )
+    // watch(
+    //   () => props.modelValue,
+    //   (newValue) => {
+    //     fromDate.value = newValue
+    //   }
+    // )
 
     //监听本地响应 ，变化后就反映到 源头
-    watch(
-      fromDate,
-      (newvalue) => {
-        emit('update:modelValue', newvalue)
-      },
-      { deep: true }
-    )
-    return { fromDate, Search, Check }
+    //   watch(
+    //     fromDate,
+    //     (newvalue) => {
+    //       emit('update:modelValue', newvalue)
+    //     },
+    //     { deep: true }
+    //   )
+
+    const changeValue = (newValue: any, item: string) => {
+      emit('update:modelValue', { ...props.modelValue, [item]: newValue })
+    }
+    return { fromDate, Search, Check, changeValue }
   }
 })
 </script>
@@ -117,6 +128,7 @@ export default defineComponent({
   overflow: hidden;
   padding: 20px;
   margin-bottom: 0px;
+  // width: 100%;
   .el-row {
     margin-bottom: 20px;
     &:last-child {

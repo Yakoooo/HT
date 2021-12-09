@@ -1,6 +1,7 @@
 import axios from 'axios'
 import type { AxiosInstance } from 'axios'
 import type { cyjRequestInterceptors, cyjRequestConfig } from './type'
+import { ElMessageBox, ElMessage } from 'element-plus'
 
 class cyjRequest {
   // 创建实例 和 拦截器；
@@ -22,9 +23,25 @@ class cyjRequest {
     )
 
     //全局的拦截器
-    this.instance.interceptors.request.use((config) => {
-      return config
-    })
+    this.instance.interceptors.response.use(
+      (res) => {
+        return res
+      },
+      (err) => {
+        console.log(err)
+
+        ElMessageBox.alert(err, {
+          confirmButtonText: 'OK',
+          callback: (action: any) => {
+            ElMessage({
+              type: 'info',
+              message: `action: ${action}`
+            })
+          }
+        })
+        return err
+      }
+    )
   }
 
   request<T>(config: cyjRequestConfig<T>): Promise<T> {

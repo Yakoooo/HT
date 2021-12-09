@@ -6,7 +6,9 @@
       </template>
       <template #btn>
         <div>
-          <el-button type="primary" :icon="Search">搜索</el-button>
+          <el-button type="primary" @click="handleSearchClick" :icon="Search"
+            >搜索</el-button
+          >
           <el-button type="primary" @click="handleResetClick" :icon="Check"
             >重置</el-button
           >
@@ -22,9 +24,10 @@ import cyjFrom from '@/base-ui/CYJFrom/index'
 export default defineComponent({
   name: 'pageSearch',
   props: ['fromConfig'],
-  setup(props) {
+  emits: ['clickSearch', 'clickReset'],
+  setup(props, { emit }) {
     //输入的数据应该由配置文件决定
-    const fromItem = props.fromConfig.fromitem ?? []
+    const fromItem = props.fromConfig?.fromitem ?? []
     const fromDataOrg: any = {}
 
     for (const item of fromItem) {
@@ -34,9 +37,13 @@ export default defineComponent({
 
     const handleResetClick = () => {
       fromData.value = fromDataOrg
+      emit('clickSearch')
+    }
+    const handleSearchClick = () => {
+      emit('clickSearch', fromData.value)
     }
 
-    return { fromData, handleResetClick }
+    return { fromData, handleResetClick, handleSearchClick }
   },
   components: { cyjFrom }
 })

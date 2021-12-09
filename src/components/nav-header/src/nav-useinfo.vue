@@ -13,7 +13,7 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>退出登录</el-dropdown-item>
+          <el-dropdown-item @click="DeleteToken">退出登录</el-dropdown-item>
           <el-dropdown-item>用户信息</el-dropdown-item>
           <el-dropdown-item>系统管理</el-dropdown-item>
         </el-dropdown-menu>
@@ -24,9 +24,18 @@
 
 <script lang="ts">
 import { ArrowDown } from '@element-plus/icons'
+import { useRouter } from 'vue-router'
+import localCaChe from '@/utilt/loadcaChe'
 import { defineComponent } from 'vue'
 export default defineComponent({
-  components: { ArrowDown }
+  setup() {
+    const router = useRouter()
+    const DeleteToken = () => {
+      localCaChe.deleteCaChe('token')
+      router.push('/main')
+    }
+    return { DeleteToken, ArrowDown }
+  }
 })
 </script>
 <style scoped lang="less">

@@ -7,7 +7,8 @@ export interface IFromItem {
   placeholder?: string
   options?: any[]
   otherOptions?: any
-  value:any
+  value: any
+  isHidden?: boolean
 }
 
 export interface IFromConfig {

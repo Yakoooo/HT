@@ -1,7 +1,7 @@
 import { IFromConfig } from '@/base-ui/CYJFrom/types/types'
 export const fromConfig: IFromConfig = {
   fromitem: [
-    { type: 'input', label: '名称', placeholder: '输入名称', value: 'name' },
+    { type: 'input', label: '角色', placeholder: '输入角色', value: 'name' },
     {
       type: 'input',
       label: '权限',

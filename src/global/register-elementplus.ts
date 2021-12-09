@@ -34,7 +34,13 @@ import {
   ElBreadcrumb,
   ElBreadcrumbItem,
   ElTableColumn,
-  ElPagination
+  ElPagination,
+  ElImage,
+  ElDialog,
+  ElTree,
+  ElCard,
+  ElMessageBox,
+  ElMessage
 } from 'element-plus'
 
 const elements = [
@@ -71,7 +77,13 @@ const elements = [
   ElBreadcrumb,
   ElBreadcrumbItem,
   ElTableColumn,
-  ElPagination
+  ElPagination,
+  ElImage,
+  ElDialog,
+  ElTree,
+  ElCard,
+  ElMessageBox,
+  ElMessage
 ]
 
 export default function (app: App): void {

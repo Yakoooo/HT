@@ -9,7 +9,7 @@ import {
 } from '@/service/login/login'
 import { IAccount } from '@/service/login/types'
 import localCaChe from '@/utilt/loadcaChe'
-import mapRouterUse from '@/utilt/map-menus'
+import mapRouterUse, { mapMenusToPermissions } from '@/utilt/map-menus'
 
 const loginModule: Module<loginType, rootStateType> = {
   namespaced: true,
@@ -17,7 +17,8 @@ const loginModule: Module<loginType, rootStateType> = {
     return {
       token: ' ',
       useInfo: {},
-      menu: []
+      menu: [],
+      Permissions: []
     }
   },
   mutations: {
@@ -34,6 +35,9 @@ const loginModule: Module<loginType, rootStateType> = {
       routers.forEach((add: any) => {
         router.addRoute('main', add)
       })
+
+      const Permissions = mapMenusToPermissions(value)
+      state.Permissions = Permissions
     }
   },
   getters: {},
@@ -43,6 +47,9 @@ const loginModule: Module<loginType, rootStateType> = {
       context.commit('setToken', token)
       localCaChe.setCache('token', token)
 
+      //调用根方法
+      context.dispatch('getIntiDepartment', {}, { root: true })
+
       const useInfo = await loginAccountUseInfo(id)
       context.commit('setUseInfo', useInfo.data)
       localCaChe.setCache('useInfo', useInfo.data)
@@ -51,7 +58,7 @@ const loginModule: Module<loginType, rootStateType> = {
       context.commit('setUseMenu', useMenu.data)
       localCaChe.setCache('menu', useMenu.data)
 
-      router.push('/home')
+      router.push('/main')
     },
 
     setVuexstore(context) {
@@ -59,6 +66,9 @@ const loginModule: Module<loginType, rootStateType> = {
       if (token) {
         context.commit('setToken', token)
       }
+
+      //调用根方法
+      context.dispatch('getIntiDepartment', {}, { root: true })
 
       const useInfo = localCaChe.getCaChe('useInfo')
       if (useInfo) {

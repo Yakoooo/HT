@@ -1,35 +1,45 @@
 import { IFromConfig } from '@/base-ui/CYJFrom/types/types'
 export const fromConfig: IFromConfig = {
   fromitem: [
-    { type: 'input', label: 'input', placeholder: '输入用户名', value: 'id' },
     {
-      type: 'password',
-      label: 'password',
+      type: 'input',
+      label: '用户名',
       placeholder: '输入用户名',
       value: 'name'
     },
     {
+      type: 'input',
+      label: '真实姓名',
+      placeholder: '输入真实姓名',
+      value: 'realname'
+    },
+    {
+      type: 'input',
+      label: '电话',
+      placeholder: '输入电话',
+      value: 'cellphone'
+    },
+    {
       type: 'select',
-      label: 'select',
-      placeholder: '输入用户名',
+      label: '状态',
+      placeholder: '输入状态',
       options: [
-        { key: '1', value: '一号' },
-        { key: '2', value: '二号' },
-        { key: '3', value: '三号' }
+        { key: '启用', value: 1 },
+        { key: '禁用', value: 0 }
       ],
-      value: 'password'
+      value: 'enable'
     },
     {
       type: 'datepicker',
-      label: 'datepicker',
-      placeholder: '输入用户名',
+      label: '创建时间',
+      placeholder: '选择创建时间',
       otherOptions: {
         type: 'daterange',
         'range-separator': 'To',
         'start-placeholder': 'Start date',
         'end-placeholder': 'End date'
       },
-      value: 'date'
+      value: 'createAt'
     }
   ]
 }

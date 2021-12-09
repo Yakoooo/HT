@@ -9,6 +9,7 @@
       border
       style="width: 100%"
       @selection-change="handleSelectionChange"
+      v-bind="childrenProps"
     >
       <el-table-column
         v-if="isSelection"
@@ -24,7 +25,7 @@
         align="center"
       ></el-table-column>
       <template v-for="item in TableConfig" :key="item.prop">
-        <el-table-column v-bind="item" align="center ">
+        <el-table-column v-bind="item" align="center " show-overflow-tooltip>
           <template #default="itema">
             <slot :name="item.soltName" :row="itema.row">
               {{ itema.row[item.prop] }}
@@ -34,7 +35,18 @@
       </template>
     </el-table>
     <div class="footer">
-      <slot name="footer"> </slot>
+      <slot name="footer"
+        ><el-pagination
+          :page-sizes="[10, 20, 30]"
+          :page-size="page.pageSize"
+          :current-page="page.pageCur"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="ListCount"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        >
+        </el-pagination>
+      </slot>
     </div>
   </div>
 </template>
@@ -48,6 +60,10 @@ export default defineComponent({
       type: Array,
       required: true
     },
+    ListCount: {
+      type: Number,
+      required: true
+    },
     TableConfig: {
       type: Array,
       required: true
@@ -59,14 +75,28 @@ export default defineComponent({
     isIndex: {
       type: Boolean,
       default: () => true
+    },
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
+    page: {
+      type: Object,
+      required: true
     }
   },
-  emits: ['getDate'],
+  emits: ['getDate', 'update:page'],
   setup(props, { emit }) {
     const handleSelectionChange = (value: any[]) => {
       emit('getDate', value)
     }
-    return { handleSelectionChange }
+    const handleSizeChange = (value: number) => {
+      emit('update:page', { ...props.page, pageSize: value })
+    }
+    const handleCurrentChange = (value: number) => {
+      emit('update:page', { ...props.page, pageCur: value })
+    }
+    return { handleSelectionChange, handleSizeChange, handleCurrentChange }
   }
 })
 </script>
@@ -76,7 +106,6 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   height: 40px;
-  // line-height: 40px;
 }
 .footer {
   margin-top: 20px;
