@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from 'vue-router'
 import { IbreadType } from '@/base-ui/CYJbread/types/types'
-
-let fristCur: any = null
+let fristCur: any = undefined
+export { fristCur }
 
 export function mapRouterPathName(useMenu: any[], cur: string): any {
   const bread: IbreadType[] = []
@@ -98,5 +98,3 @@ export function mapMenuTeap(menuList: any[]) {
 
   return menuListNumber
 }
-
-export { fristCur }

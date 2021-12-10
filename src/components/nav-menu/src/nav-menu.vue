@@ -44,7 +44,7 @@ import { Monitor, Setting, Goods, ChatLineRound } from '@element-plus/icons'
 import { defineComponent, computed, ref } from 'vue'
 import { useStore } from '@/store/index'
 import { useRouter, useRoute } from 'vue-router'
-import { mapRouterPath, fristCur } from '@/utilt/map-menus'
+import { mapRouterPath } from '@/utilt/map-menus'
 export default defineComponent({
   name: 'navMenu',
   props: ['isFold'],
@@ -55,9 +55,9 @@ export default defineComponent({
     const useMenu = computed(() => {
       return store.state.login.menu
     })
-    const defaultActive = ref(fristCur + '')
-    defaultActive.value = mapRouterPath(useMenu.value, routePath.path)
-    console.log(defaultActive.value)
+
+    const defaultActive = ref()
+    defaultActive.value = mapRouterPath(useMenu.value, routePath.path) ?? '2'
 
     const onRouterPush = (value: any) => {
       if (value.url) {

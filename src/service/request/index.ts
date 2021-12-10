@@ -30,15 +30,15 @@ class cyjRequest {
       (err) => {
         console.log(err)
 
-        ElMessageBox.alert(err, {
-          confirmButtonText: 'OK',
-          callback: (action: any) => {
-            ElMessage({
-              type: 'info',
-              message: `action: ${action}`
-            })
-          }
-        })
+        // ElMessageBox.alert(err, {
+        //   confirmButtonText: 'OK',
+        //   callback: (action: any) => {
+        //     ElMessage({
+        //       type: 'info',
+        //       message: `action: ${action}`
+        //     })
+        //   }
+        // })
         return err
       }
     )

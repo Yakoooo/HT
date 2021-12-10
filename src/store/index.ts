@@ -53,7 +53,6 @@ const store = createStore<rootStateType>({
 
 export function setupvuex() {
   store.dispatch('login/setVuexstore')
-  // store.dispatch('getIntiDepartment')
 }
 
 export function useStore(): Store<IStroeType> {

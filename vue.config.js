@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '',
   devServer: {
     proxy: {
       // 配置多个跨域
